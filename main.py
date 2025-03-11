@@ -1,31 +1,13 @@
 import random
-import asyncio
 import pygame
-
+import threading
 from text import Text
 
 #  CONSTANTS
-DISTANCE_BETWEEN_LETTERS = 11
-FADE_SPEED = 30
+DISTANCE_Y_BETWEEN_LETTERS = 11
+DISTANCE_X_BETWEEN_LETTERS = 10
+FADE_SPEED = 20
 PINK = (255, 192, 203)
-
-def fade_out(text: pygame.font, x: int, y: int) -> None:
-    for i in range(255, -1, -1):
-        text.set_alpha(i)
-        screen.blit(text, (x, y * DISTANCE_BETWEEN_LETTERS))
-        pygame.display.flip()
-        print(i)
-        pygame.time.delay(FADE_SPEED)
-
-def fade_in(text: pygame.font, x: int, y: int) -> None:
-    for i in range(256):
-        text.set_alpha(i)
-        screen.blit(text, (x, y * DISTANCE_BETWEEN_LETTERS))
-        pygame.display.flip()
-        print(i)
-        pygame.time.delay(FADE_SPEED)
-
-
 
 #  Initializers
 pygame.init()
@@ -45,10 +27,15 @@ LOVE_LETTERS = (love_font.render('L', False, PINK),
              )
 
 letters = []
-#  Background text flowing
-for y in range(1): #random.randint(20, 50)):
-    letter = random.choice(LOVE_LETTERS)
-    letters.append(Text(letter, 0, y * DISTANCE_BETWEEN_LETTERS))
+max_priorities = []
+#  Multiple column creation
+for x in range(10):
+    #  Column creation
+    end = random.randint(20, 50)
+    max_priorities.append(end)
+    for y in range(end):
+        letter = random.choice(LOVE_LETTERS)
+        letters.append(Text(letter, x * DISTANCE_X_BETWEEN_LETTERS, y * DISTANCE_Y_BETWEEN_LETTERS, y))
 
 while running:
     for event in pygame.event.get():
@@ -57,12 +44,12 @@ while running:
     # Background
     screen.fill("black")
 
+    #  Stream animation
     for letter in letters:
+        #  Fade in, fade out animation
         letter.fade(FADE_SPEED)
         letter.text.set_alpha(letter.alpha)
         screen.blit(letter.text, (letter.x, letter.y))
-
     pygame.display.flip()
-
     clock.tick(10)
 pygame.quit()
