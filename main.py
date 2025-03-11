@@ -7,7 +7,7 @@ from text import Text
 COLUMNS = 108
 DISTANCE_Y_BETWEEN_LETTERS = 11
 DISTANCE_X_BETWEEN_LETTERS = 10
-FADE_SPEED = 20
+FADE_SPEED = 40
 PINK = (255, 192, 203)
 
 #  Initializers
@@ -27,22 +27,25 @@ LOVE_LETTERS = (love_font.render('L', False, PINK),
                 love_font.render('Y', False, PINK),
              )
 
+#  COLUMN CREATION SECTION
 letters = []
 max_priorities = []
 #  Multiple column creation
 for x in range(COLUMNS):
+    priority_variant = random.randint(0, 20)
     #  Column creation
-    end = random.randint(20, 50)
+    end = random.randint(10, 50)
     max_priorities.append(end)
     for y in range(end):
         letter = random.choice(LOVE_LETTERS)
-        letters.append(Text(letter, x * DISTANCE_X_BETWEEN_LETTERS, y * DISTANCE_Y_BETWEEN_LETTERS, y))
+        letters.append(Text(letter, x * DISTANCE_X_BETWEEN_LETTERS, y * DISTANCE_Y_BETWEEN_LETTERS, y + priority_variant))
 
+#  MAIN PROGRAM SECTION
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    # Background
+    #  Background
     screen.fill("black")
 
     #  Stream animation
