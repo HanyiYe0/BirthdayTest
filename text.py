@@ -16,6 +16,7 @@ class Text:
     y: int
     alpha: int = 0
     fade_in: bool = True
+    faded_out: bool = False
     priority: int
     def __init__(self, text, x, y, priority):
         self.text = text
@@ -37,6 +38,12 @@ class Text:
                     self.fade_in = True
         else:
             self.priority -= 1
+
+    def fade_out(self, fade_speed: int):
+        self.alpha -= fade_speed
+        if self.alpha <= 0:
+            self.alpha = 0
+            self.faded_out = True
 
     def reset_priority(self, new_priority: int):
         self.priority = new_priority
