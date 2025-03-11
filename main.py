@@ -4,6 +4,7 @@ import threading
 from text import Text
 
 #  CONSTANTS
+COLUMNS = 108
 DISTANCE_Y_BETWEEN_LETTERS = 11
 DISTANCE_X_BETWEEN_LETTERS = 10
 FADE_SPEED = 20
@@ -29,7 +30,7 @@ LOVE_LETTERS = (love_font.render('L', False, PINK),
 letters = []
 max_priorities = []
 #  Multiple column creation
-for x in range(10):
+for x in range(COLUMNS):
     #  Column creation
     end = random.randint(20, 50)
     max_priorities.append(end)
