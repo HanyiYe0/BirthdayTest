@@ -32,7 +32,7 @@ class Stream:
     def generate_stream(self):
         priority_variant = random.randint(0, 30)
         #  Column creation
-        end = random.randint(10, 50)
+        end = random.randint(20, 60)
         self.max_priorities = end + priority_variant
         for y in range(end):
             letter = random.choice(LOVE_LETTERS)

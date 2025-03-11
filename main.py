@@ -3,7 +3,8 @@ from stream import Stream
 
 #  CONSTANTS
 COLUMNS = 108
-FADE_SPEED = 40
+FADE_SPEED = 35
+FADE_OUT_SPEED = 60
 
 #  Initializers
 pygame.init()
@@ -38,7 +39,7 @@ while running:
             #  Fade out
             for letter in streams[i].letters:
                 letter.fade_in = False
-                letter.fade_out(FADE_SPEED)
+                letter.fade_out(FADE_OUT_SPEED)
                 letter.text.set_alpha(letter.alpha)
                 screen.blit(letter.text, (letter.x, letter.y))
 
@@ -60,5 +61,5 @@ while running:
             screen.blit(letter.text, (letter.x, letter.y))
 
     pygame.display.flip()
-    clock.tick(10)
+    clock.tick(15)
 pygame.quit()
