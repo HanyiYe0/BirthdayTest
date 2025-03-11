@@ -37,10 +37,3 @@ class Stream:
         for y in range(end):
             letter = random.choice(LOVE_LETTERS)
             self.letters.append(Text(letter, self.x * DISTANCE_X_BETWEEN_LETTERS, y * DISTANCE_Y_BETWEEN_LETTERS, y + priority_variant))
-
-    def soft_exit(self, fade_speed: int):
-        for letter in self.letters:
-            letter.fade_out(fade_speed)
-
-    def get_x(self) -> int:
-        return self.x

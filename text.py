@@ -44,6 +44,3 @@ class Text:
         if self.alpha <= 0:
             self.alpha = 0
             self.faded_out = True
-
-    def reset_priority(self, new_priority: int):
-        self.priority = new_priority

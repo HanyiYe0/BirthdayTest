@@ -1,10 +1,12 @@
+import random
+
 import pygame
 from stream import Stream
-
+from ball import Ball
 #  CONSTANTS
 COLUMNS = 108
 FADE_SPEED = 35
-FADE_OUT_SPEED = 60
+FADE_OUT_SPEED = 40
 
 #  Initializers
 pygame.init()
@@ -13,9 +15,26 @@ running = True
 clock = pygame.time.Clock()
 
 
-streams = []
-max_priorities = []
+balls: list[Ball] = []
+streams: list[Stream] = []
+max_priorities: list[int] = []
 
+#
+one_coords = (
+    (500, 300),
+    (510, 300),
+    (520, 300),
+    (530, 300),
+    (540, 300),
+    (550, 300),
+    (560, 300),
+    (570, 300),
+    (580, 300),
+    (590, 300),
+    (600, 300)
+)
+fly_to_target = False
+temp_count = 400
 #  COLUMN CREATION SECTION
 #  Multiple column creation
 for x in range(COLUMNS):
@@ -24,6 +43,9 @@ for x in range(COLUMNS):
     s.generate_stream()
     max_priorities.append(s.max_priorities)
 
+#  BALLS CREATION SECTION
+for x, y in one_coords:
+    balls.append(Ball(x, y))
 
 #  MAIN PROGRAM SECTION
 while running:
@@ -33,6 +55,9 @@ while running:
     #  Background
     screen.fill("black")
 
+    #
+    #  Streams
+    #
     for i in range(len(streams)):
         #  Checker for finished full stream animation
         if max_priorities[i] <= 0:
@@ -59,6 +84,25 @@ while running:
             letter.fade(FADE_SPEED)
             letter.text.set_alpha(letter.alpha)
             screen.blit(letter.text, (letter.x, letter.y))
+
+    #
+    #  Numbers
+    #
+    for ball in balls:
+        #  Fly out
+        if temp_count >= 0 and not fly_to_target:
+            ball.fly_out()
+            temp_count -= 1
+        else:
+            fly_to_target = True
+
+        #  Fly to target
+        if fly_to_target:
+            temp_count += 1
+            ball.move_towards_target()
+
+        #  Update the ball
+        ball.draw(screen)
 
     pygame.display.flip()
     clock.tick(15)
