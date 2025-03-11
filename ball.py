@@ -33,10 +33,16 @@ class Ball:
         self.flyout_angle = random.randint(0, 360)
 
     def move_towards_target(self):
-        angle = math.atan2(self.target_y - self.y, self.target_x - self.x)
-        if self.x != self.target_x or self.y != self.target_y:
+        if self.speed < self._calculate_distance():
+            angle = math.atan2(self.target_y - self.y, self.target_x - self.x)
             self.x += self.speed * math.cos(angle)
             self.y += self.speed * math.sin(angle)
+        else:
+            self.x = self.target_x
+            self.y = self.target_y
+
+    def _calculate_distance(self) -> float:
+        return math.sqrt((self.x - self.target_x)**2 + (self.y - self.target_y)**2)
 
     def fly_out(self):
         self.x += self.speed * math.cos(self.flyout_angle)
