@@ -1,28 +1,27 @@
 import random
 
 import pygame
+
+from animation import Animation
 from stream import Stream
 from ball import Ball
 #  CONSTANTS
 COLUMNS = 108
 FADE_SPEED = 35
 FADE_OUT_SPEED = 40
-FLY_OUT_AMOUNT = 0
+FLY_OUT_AMOUNT = 5000
 #  Initializers
 pygame.init()
 screen = pygame.display.set_mode((1080, 720))
 running = True
 clock = pygame.time.Clock()
 
+#1, 2, 3, Happy Birthday
+animator = Animation()
 
 balls: list[Ball] = []
 streams: list[Stream] = []
 max_priorities: list[int] = []
-
-#
-one_coords = (
-
-)
 
 
 fly_to_target = False
@@ -34,10 +33,6 @@ for x in range(COLUMNS):
     streams.append(s)
     s.generate_stream()
     max_priorities.append(s.max_priorities)
-
-#  BALLS CREATION SECTION
-for x, y in one_coords:
-    balls.append(Ball(x, y))
 
 #  MAIN PROGRAM SECTION
 while running:
@@ -80,24 +75,7 @@ while running:
     #
     #  Numbers
     #
-    for ball in balls:
-        #  Fly out
-        if temp_count >= 0 and not fly_to_target:
-            ball.fly_out()
-            temp_count -= 1
-        else:
-            fly_to_target = True
-
-        #  Fly to target
-        if fly_to_target:
-            if temp_count <= FLY_OUT_AMOUNT + 2000:
-                temp_count += 1
-            # else:
-            #     fly_to_target = False
-            ball.move_towards_target()
-
-        #  Update the ball
-        ball.draw(screen)
+    animator.animate_1(screen)
 
     pygame.display.flip()
     clock.tick(15)

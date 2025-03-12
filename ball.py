@@ -17,15 +17,16 @@ class Ball:
     speed: speed that the ball moves in
     flyout_angle: the angle that the ball will
                   fly out towards when the function fly out is called
+    in_pos: whether the ball is in the target position or not
     """
     x: int = 540
     y: int = 350
     target_x: int
     target_y: int
     radius: int = 5
-    speed: int = 10
+    speed: int = 20
     flyout_angle: int
-
+    in_pos: bool = False
 
     def __init__(self, target_x: int, target_y: int):
         self.target_x = target_x
@@ -38,6 +39,7 @@ class Ball:
             self.x += self.speed * math.cos(angle)
             self.y += self.speed * math.sin(angle)
         else:
+            self.in_pos = True
             self.x = self.target_x
             self.y = self.target_y
 
