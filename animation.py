@@ -1,28 +1,99 @@
+import random
+
 from ball import Ball
+from coordinate import Coordinate
 
-one_coords = [[0, 5], [0, 6], [0, 7], [0, 8], [0, 21], [0, 22], [0, 23], [0, 24], [1, 5], [1, 6], [1, 7], [1, 8], [1, 21], [1, 22], [1, 23], [1, 24], [2, 4], [2, 5], [2, 6], [2, 7], [2, 8], [2, 21], [2, 22], [2, 23], [2, 24], [3, 3], [3, 4], [3, 5], [3, 6], [3, 7], [3, 21], [3, 22], [3, 23], [3, 24], [4, 3], [4, 4], [4, 5], [4, 6], [4, 7], [4, 21], [4, 22], [4, 23], [4, 24], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 21], [5, 22], [5, 23], [5, 24], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7], [6, 8], [6, 9], [6, 10], [6, 11], [6, 12], [6, 13], [6, 14], [6, 15], [6, 16], [6, 17], [6, 18], [6, 19], [6, 20], [6, 21], [6, 22], [6, 23], [6, 24], [7, 0], [7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6], [7, 7], [7, 8], [7, 9], [7, 10], [7, 11], [7, 12], [7, 13], [7, 14], [7, 15], [7, 16], [7, 17], [7, 18], [7, 19], [7, 20], [7, 21], [7, 22], [7, 23], [7, 24], [8, 0], [8, 1], [8, 2], [8, 3], [8, 4], [8, 5], [8, 6], [8, 7], [8, 8], [8, 9], [8, 10], [8, 11], [8, 12], [8, 13], [8, 14], [8, 15], [8, 16], [8, 17], [8, 18], [8, 19], [8, 20], [8, 21], [8, 22], [8, 23], [8, 24], [9, 0], [9, 1], [9, 2], [9, 3], [9, 4], [9, 5], [9, 6], [9, 7], [9, 8], [9, 9], [9, 10], [9, 11], [9, 12], [9, 13], [9, 14], [9, 15], [9, 16], [9, 17], [9, 18], [9, 19], [9, 20], [9, 21], [9, 22], [9, 23], [9, 24], [10, 0], [10, 1], [10, 2], [10, 3], [10, 4], [10, 5], [10, 6], [10, 7], [10, 8], [10, 9], [10, 10], [10, 11], [10, 12], [10, 13], [10, 14], [10, 15], [10, 16], [10, 17], [10, 18], [10, 19], [10, 20], [10, 21], [10, 22], [10, 23], [10, 24], [11, 21], [11, 22], [11, 23], [11, 24], [12, 21], [12, 22], [12, 23], [12, 24], [13, 21], [13, 22], [13, 23], [13, 24], [14, 21], [14, 22], [14, 23], [14, 24], [15, 21], [15, 22], [15, 23], [15, 24]]
 
 
-#1
-ONE_INITIAL = 460, 200
 class Animation:
     """
     balls: a list of balls that will be animated
+    done: whether the animation is done running.
     """
     name: str
     balls: list[Ball]
+    completed: list
+
     def __init__(self):
-        self.balls = []
+        self.balls = [Ball(0, 0) for _ in range(1000)]
+        self.completed = []
 
     def animate_1(self, screen):
-        if not self.balls:
-            self.set_up_balls(one_coords, ONE_INITIAL)
+        self.set_up_balls_target(Coordinate.one_coords)
 
         for ball in self.balls:
             ball.move_towards_target()
             ball.draw(screen)
 
-    def set_up_balls(self, coord: list[list[int]], initial: tuple):
-        #  BALLS CREATION SECTION
-        for x, y in coord:
-            self.balls.append(Ball(initial[0] + x * 10, initial[1] + y * 11))
+        if all([ball.in_pos for ball in self.balls]):
+            if Coordinate.one not in self.completed:
+                self.completed.insert(0, Coordinate.one)
+
+    def animate_2(self, screen):
+        self.set_up_balls_target(Coordinate.two_coords)
+
+        for ball in self.balls:
+            ball.move_towards_target()
+            ball.draw(screen)
+
+        if all([ball.in_pos for ball in self.balls]):
+            if Coordinate.two not in self.completed:
+                self.completed.insert(0, Coordinate.two)
+
+    def animate_3(self, screen):
+        self.set_up_balls_target(Coordinate.three_coords)
+
+        for ball in self.balls:
+            ball.move_towards_target()
+            ball.draw(screen)
+
+        if all([ball.in_pos for ball in self.balls]):
+            if Coordinate.three not in self.completed:
+                self.completed.insert(0, Coordinate.three)
+
+    def set_up_balls_target(self, animate_this: list):
+        #  setup ball target
+        match animate_this:
+            case Coordinate.one_coords:
+                for i in range(len(Coordinate.one_coords)):
+                    self.balls[i].in_pos = False
+                    self.balls[i].target_x = Coordinate.ONE_INITIAL[0] + Coordinate.one_coords[i][0] * 10
+                    self.balls[i].target_y = Coordinate.ONE_INITIAL[1] + Coordinate.one_coords[i][1] * 11
+                self._set_to_centre(Coordinate.one_coords)
+
+            case Coordinate.two_coords:
+                for i in range(len(Coordinate.two_coords)):
+                    self.balls[i].in_pos = False
+                    self.balls[i].target_x = Coordinate.TWO_INITIAL[0] + Coordinate.two_coords[i][0] * 10
+                    self.balls[i].target_y = Coordinate.TWO_INITIAL[1] + Coordinate.two_coords[i][1] * 11
+                self._set_to_centre(Coordinate.two_coords)
+
+            case Coordinate.three_coords:
+                for i in range(len(Coordinate.three_coords)):
+                    self.balls[i].in_pos = False
+                    self.balls[i].target_x = Coordinate.THREE_INITIAL[0] + Coordinate.three_coords[i][0] * 10
+                    self.balls[i].target_y = Coordinate.THREE_INITIAL[1] + Coordinate.three_coords[i][1] * 11
+                self._set_to_centre(Coordinate.three_coords)
+
+    def out(self, screen):
+        for ball in self.balls:
+            ball.fly_out()
+            ball.draw(screen)
+
+    def _set_to_centre(self, coordinate):
+        for ball in self.balls[len(coordinate):]:
+            ball.in_pos = False
+            ball.target_x = Coordinate.CENTRE_OF_SCREEN[0]
+            ball.target_y = Coordinate.CENTRE_OF_SCREEN[1]
+            ball.x = Coordinate.CENTRE_OF_SCREEN[0]
+            ball.y = Coordinate.CENTRE_OF_SCREEN[1]
+
+    def animate_all(self, screen):
+        if not self.completed:
+            self.animate_1(screen)
+            return
+        match self.completed[0]:
+            case Coordinate.one:
+                self.animate_2(screen)
+            case Coordinate.two:
+                self.animate_3(screen)
