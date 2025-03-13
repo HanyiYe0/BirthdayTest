@@ -98,16 +98,16 @@ class Animation:
                         self.balls[curr].target_y = initial[1] + coord[i][1] * 11
                         curr += 1
 
-                self._set_to_centre(curr)
+                self._set_to_centre(curr, (550, 332))
 
 
-    def _set_to_centre(self, length: int):
+    def _set_to_centre(self, length: int, new_pos: tuple = Coordinate.CENTRE_OF_SCREEN):
         for ball in self.balls[length:]:
             ball.in_pos = False
-            ball.target_x = Coordinate.CENTRE_OF_SCREEN[0]
-            ball.target_y = Coordinate.CENTRE_OF_SCREEN[1]
-            ball.x = Coordinate.CENTRE_OF_SCREEN[0]
-            ball.y = Coordinate.CENTRE_OF_SCREEN[1]
+            ball.target_x = new_pos[0]
+            ball.target_y = new_pos[1]
+            ball.x = new_pos[0]
+            ball.y = new_pos[1]
 
     def _get_time_elapsed(self) -> float:
         return time() - self._start_time
