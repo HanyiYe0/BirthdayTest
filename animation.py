@@ -65,6 +65,17 @@ class Animation:
             if Coordinate.qin_ai_de not in self.completed:
                 self.completed.insert(0, Coordinate.qin_ai_de)
 
+    def animate_sheng_ri_kuai_le(self, screen):
+        self.set_up_balls_target(Coordinate.sheng_ri_kuai_le_coords)
+
+        for ball in self.balls:
+            ball.move_towards_target()
+            ball.draw(screen)
+
+        if all([ball.in_pos for ball in self.balls]):
+            if Coordinate.sheng_ri_kuai_le not in self.completed:
+                self.completed.insert(0, Coordinate.sheng_ri_kuai_le)
+
     def set_up_balls_target(self, animate_this: list):
         #  setup ball target
         match animate_this:
@@ -99,6 +110,17 @@ class Animation:
                         curr += 1
 
                 self._set_to_centre(curr, (550, 332))
+
+            case Coordinate.sheng_ri_kuai_le_coords:
+                curr = 0
+                for coord, initial in Coordinate.sheng_ri_kuai_le_coords:
+                    for i in range(len(coord)):
+                        self.balls[curr].in_pos = False
+                        self.balls[curr].target_x = initial[0] + coord[i][0] * 10
+                        self.balls[curr].target_y = initial[1] + coord[i][1] * 11
+                        curr += 1
+
+                self._set_to_centre(curr, (550, 310))
 
 
     def _set_to_centre(self, length: int, new_pos: tuple = Coordinate.CENTRE_OF_SCREEN):
@@ -137,4 +159,6 @@ class Animation:
                 self.wait_then(4, self.animate_qin_ai_de, screen, self.animate_1)
             #  Stay at 亲爱的
             case Coordinate.qin_ai_de:
-                self.animate_qin_ai_de(screen)
+                self.wait_then(6, self.animate_sheng_ri_kuai_le, screen, self.animate_qin_ai_de)
+            case Coordinate.sheng_ri_kuai_le:
+                self.animate_sheng_ri_kuai_le(screen)
