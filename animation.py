@@ -2,21 +2,24 @@ import random
 
 from ball import Ball
 from coordinate import Coordinate
-
-
+from time import time
 
 class Animation:
     """
     balls: a list of balls that will be animated
-    done: whether the animation is done running.
+    completed: list of completed animations
     """
-    name: str
+    #  Private Attributes
+    #      _start_time: the start time of the animation. Used for knowing when to play what animation
+
     balls: list[Ball]
     completed: list
+    _start_time: time()
 
     def __init__(self):
         self.balls = [Ball(0, 0) for _ in range(1000)]
         self.completed = []
+        self._start_time = time()
 
     def animate_1(self, screen):
         self.set_up_balls_target(Coordinate.one_coords)
@@ -75,11 +78,6 @@ class Animation:
                     self.balls[i].target_y = Coordinate.THREE_INITIAL[1] + Coordinate.three_coords[i][1] * 11
                 self._set_to_centre(Coordinate.three_coords)
 
-    def out(self, screen):
-        for ball in self.balls:
-            ball.fly_out()
-            ball.draw(screen)
-
     def _set_to_centre(self, coordinate):
         for ball in self.balls[len(coordinate):]:
             ball.in_pos = False
@@ -88,12 +86,24 @@ class Animation:
             ball.x = Coordinate.CENTRE_OF_SCREEN[0]
             ball.y = Coordinate.CENTRE_OF_SCREEN[1]
 
+    def _get_time_elapsed(self) -> float:
+        return time() - self._start_time
+
+    def wait_then(self, wait_until: float, then: callable, screen, prev: callable = lambda _: None):
+        if self._get_time_elapsed() >= wait_until:
+            then(screen)
+        else:
+            prev(screen)
+
     def animate_all(self, screen):
         if not self.completed:
-            self.animate_1(screen)
+            self.wait_then(2, self.animate_3, screen)
             return
+
         match self.completed[0]:
-            case Coordinate.one:
-                self.animate_2(screen)
+            case Coordinate.three:
+                self.wait_then(4, self.animate_2, screen, self.animate_3)
             case Coordinate.two:
-                self.animate_3(screen)
+                self.wait_then(6, self.animate_1, screen, self.animate_2)
+            case Coordinate.one:
+                self.animate_1(screen)

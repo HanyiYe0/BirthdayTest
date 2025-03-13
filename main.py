@@ -5,6 +5,8 @@ import pygame
 from animation import Animation
 from stream import Stream
 from ball import Ball
+from time import time
+
 #  CONSTANTS
 COLUMNS = 108
 FADE_SPEED = 35
@@ -33,6 +35,9 @@ for x in range(COLUMNS):
     streams.append(s)
     s.generate_stream()
     max_priorities.append(s.max_priorities)
+
+
+start = time()
 
 #  MAIN PROGRAM SECTION
 while running:
@@ -73,14 +78,9 @@ while running:
             screen.blit(letter.text, (letter.x, letter.y))
 
     #
-    #  Numbers
+    #  Animation
     #
     animator.animate_all(screen)
-        #animator.out(screen)
-        #one_animator.animate_centre_circle(screen)
-       #two_animator.animate_2(screen)
-    #if two_animator.done:
-        #three_animator.animate_3(screen)
 
     pygame.display.flip()
     clock.tick(15)

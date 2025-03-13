@@ -10,7 +10,7 @@ class Coordinate:
     one = "1"
     two = "2"
     three = "3"
-
+    wait = "-1"
     #  Initial coordinates
     ONE_INITIAL = 460, 200
     TWO_INITIAL = 460, 200
