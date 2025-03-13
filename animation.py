@@ -17,7 +17,7 @@ class Animation:
     _start_time: time()
 
     def __init__(self):
-        self.balls = [Ball(0, 0) for _ in range(1000)]
+        self.balls = [Ball(0, 0) for _ in range(2000)]
         self.completed = []
         self._start_time = time()
 
